@@ -2,18 +2,20 @@ package com.example.bajajnotifications
 
 import android.app.Service
 import android.content.Intent
+import android.media.AudioAttributes
+import android.os.Build
 import android.os.IBinder
 import android.speech.tts.TextToSpeech
 import android.speech.tts.TextToSpeech.OnInitListener
 import android.speech.tts.UtteranceProgressListener
 import android.util.Log
+import android.widget.Toast
 import java.util.*
 
 
 class TTS : Service(), OnInitListener {
     private var mTts: TextToSpeech? = null
     private lateinit var spokenText: String
-    private var isInit: Boolean = false
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         if(intent?.extras != null) {
@@ -23,7 +25,6 @@ class TTS : Service(), OnInitListener {
             spokenText = ""
         }
         Log.d(TAG, "onStartCommand: $spokenText")
-        speak()
         return START_NOT_STICKY
     }
 
@@ -38,9 +39,26 @@ class TTS : Service(), OnInitListener {
             val result = mTts!!.setLanguage(Locale("hi", "IN"))
             if (result != TextToSpeech.LANG_MISSING_DATA && result != TextToSpeech.LANG_NOT_SUPPORTED) {
                 Log.d(TAG, "onInit: speaking........")
+                addAudioAttributes()
                 speak()
-                isInit = true
             }
+            else {
+                Log.d(TAG, "onInit: Language not supported")
+                Toast.makeText(applicationContext, "Language not supported", Toast.LENGTH_SHORT).show()
+            }
+        }
+        else {
+            Log.d(TAG, "onInit: TTS not initializing")
+        }
+    }
+
+    private fun addAudioAttributes() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            val audioAttributes = AudioAttributes.Builder()
+                .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+                .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                .build()
+            mTts?.setAudioAttributes(audioAttributes)
         }
     }
 
