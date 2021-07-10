@@ -5,4 +5,9 @@
     <string name="notification_title">Bajaj Finserv</string>
     <string name="push_notification_channel_description">Test Channel for Push notifications</string>
     <string name="play">Play</string>
+
+    <!--  topics name strings  -->
+    <string name="test">test</string>
+
+
 </resources>

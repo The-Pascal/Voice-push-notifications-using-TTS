@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import com.example.bajajnotifications.MainActivity
 import com.example.bajajnotifications.R
 import com.example.bajajnotifications.TTS
 import java.util.*
@@ -17,6 +18,15 @@ private const val TAG = "NotificationsUtils"
 fun NotificationManager.sendNotification(messageBody: String, applicationContext: Context) {
 
     val notificationId = (Date().time / 1000L % Int.MAX_VALUE).toInt()
+
+    val contentIntent = Intent(applicationContext, MainActivity::class.java)
+
+    val contentPendingIntent = PendingIntent.getActivity(
+        applicationContext,
+        notificationId,
+        contentIntent,
+        PendingIntent.FLAG_UPDATE_CURRENT
+    )
 
     val playIntent = Intent(applicationContext, TTS::class.java)
     playIntent.putExtra("text", messageBody)
@@ -40,6 +50,7 @@ fun NotificationManager.sendNotification(messageBody: String, applicationContext
         .setAutoCancel(true)
         .setPriority(NotificationCompat.PRIORITY_HIGH)
         .setSound(null)
+        .setContentIntent(contentPendingIntent)
 
         .addAction(
             R.drawable.ic_launcher_foreground,

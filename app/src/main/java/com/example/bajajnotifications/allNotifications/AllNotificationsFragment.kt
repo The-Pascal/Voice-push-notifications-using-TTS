@@ -5,6 +5,7 @@ import android.app.NotificationManager
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.example.bajajnotifications.R
 import com.example.bajajnotifications.databinding.FragmentAllNotificationsBinding
+import com.google.firebase.messaging.FirebaseMessaging
 
 class AllNotificationsFragment : Fragment() {
 
@@ -30,6 +32,8 @@ class AllNotificationsFragment : Fragment() {
             getString(R.string.push_notification_channel_id),
             getString(R.string.push_notification_channel_name)
         )
+
+        subscribeTopic()
 
         return binding.root
     }
@@ -53,6 +57,17 @@ class AllNotificationsFragment : Fragment() {
             )
             notificationManager.createNotificationChannel(notificationChannel)
         }
+    }
+
+    private fun subscribeTopic() {
+        FirebaseMessaging.getInstance().subscribeToTopic(getString(R.string.test))
+            .addOnCompleteListener { task ->
+                var message = "Done Subscribe"
+                if (!task.isSuccessful) {
+                    message = "Subscribed"
+                }
+                Log.i("status", message)
+            }
     }
 
 }
