@@ -1,8 +1,11 @@
 package com.example.bajajnotifications
 
 import android.app.NotificationManager
+import android.media.AudioAttributes
+import android.os.Build
 import android.speech.tts.TextToSpeech
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import com.example.bajajnotifications.utils.sendNotification
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -12,7 +15,6 @@ import java.util.*
 class MyFirebaseMessagingService: FirebaseMessagingService(), TextToSpeech.OnInitListener {
 
     private lateinit var tts: TextToSpeech
-    private var isInit: Boolean = false
     private lateinit var text: String
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
@@ -56,10 +58,19 @@ class MyFirebaseMessagingService: FirebaseMessagingService(), TextToSpeech.OnIni
             val result = tts.setLanguage(Locale("hi","IN"))
             if(result != TextToSpeech.LANG_MISSING_DATA
                 && result != TextToSpeech.LANG_NOT_SUPPORTED) {
-                speak()
-                isInit = true
-                Log.d(TAG, "onInit: isInit = true")
+                    addAudioAttributes()
+                    speak()
             }
+        }
+    }
+
+    private fun addAudioAttributes() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            val audioAttributes = AudioAttributes.Builder()
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+                    .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                    .build()
+            tts.setAudioAttributes(audioAttributes)
         }
     }
 

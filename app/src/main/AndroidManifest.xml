@@ -16,6 +16,11 @@
             </intent-filter>
         </activity>
 
+        <receiver
+            android:name=".receiver.ReadNotificationReceiver"
+            android:enabled="true"
+            android:exported="false"/>
+
         <!-- firebase push notification service-->
         <service
             android:name=".MyFirebaseMessagingService"
