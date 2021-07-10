@@ -4,25 +4,28 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.example.bajajnotifications.R
-import com.example.bajajnotifications.receiver.ReadNotificationReceiver
+import com.example.bajajnotifications.TTS
 import java.util.*
 
 private const val REQUEST_CODE = 0
 private const val FLAGS = 0
+private const val TAG = "NotificationsUtils"
 
 fun NotificationManager.sendNotification(messageBody: String, applicationContext: Context) {
 
     val notificationId = (Date().time / 1000L % Int.MAX_VALUE).toInt()
 
-    val playIntent = Intent(applicationContext, ReadNotificationReceiver::class.java)
+    val playIntent = Intent(applicationContext, TTS::class.java)
     playIntent.putExtra("text", messageBody)
-    val playPendingIntent: PendingIntent = PendingIntent.getBroadcast(
+    Log.d(TAG, "sendNotification: $messageBody")
+    val playPendingIntent: PendingIntent = PendingIntent.getService(
         applicationContext,
-        REQUEST_CODE,
+        notificationId,
         playIntent,
-        FLAGS
+        PendingIntent.FLAG_UPDATE_CURRENT
     )
 
     val builder = NotificationCompat.Builder(

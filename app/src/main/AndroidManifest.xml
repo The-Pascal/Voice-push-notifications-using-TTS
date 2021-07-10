@@ -21,6 +21,10 @@
             android:enabled="true"
             android:exported="false"/>
 
+        <service
+            android:name=".TTS"
+            android:exported="false"/>
+
         <!-- firebase push notification service-->
         <service
             android:name=".MyFirebaseMessagingService"
