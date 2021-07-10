@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Bajaj Notifications</string>
+    <string name="push_notification_channel_id" translatable="false">push_channel</string>
+    <string name="push_notification_channel_name" translatable="false">Push Notifications</string>
+    <string name="notification_title">Bajaj Finserv</string>
+    <string name="push_notification_channel_description">Test Channel for Push notifications</string>
 </resources>

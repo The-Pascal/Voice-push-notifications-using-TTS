@@ -1,5 +1,9 @@
 package com.example.bajajnotifications.allNotifications
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -19,13 +23,38 @@ class AllNotificationsFragment : Fragment() {
     ): View {
         val binding = FragmentAllNotificationsBinding.inflate(inflater)
 
-        binding.lifecycleOwner = this
-
         val viewModel = ViewModelProvider(this).get(AllNotificationsViewModel::class.java)
 
+        binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
+        createChannel(
+            getString(R.string.push_notification_channel_id),
+            getString(R.string.push_notification_channel_name)
+        )
+
         return binding.root
+    }
+
+    private fun createChannel(channelId: String, channelName: String) {
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val notificationChannel = NotificationChannel(
+                channelId,
+                channelName,
+                NotificationManager.IMPORTANCE_HIGH
+            )
+
+            notificationChannel.enableLights(true)
+            notificationChannel.lightColor = Color.RED
+            notificationChannel.enableVibration(true)
+            notificationChannel.description = getString(R.string.push_notification_channel_description)
+
+            val notificationManager = requireActivity().getSystemService(
+                NotificationManager::class.java
+            )
+            notificationManager.createNotificationChannel(notificationChannel)
+        }
     }
 
 }
