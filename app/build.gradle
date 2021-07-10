@@ -2,12 +2,15 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'com.google.gms.google-services'
+    id 'kotlin-kapt'
 }
 
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
-
+    buildFeatures {
+        dataBinding true
+    }
     defaultConfig {
         applicationId "com.example.bajajnotifications"
         minSdkVersion 16
@@ -41,7 +44,11 @@ dependencies {
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'com.google.firebase:firebase-messaging-ktx:22.0.0'
-    testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+    // ViewModel
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
+    // LiveData
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version")
 }
