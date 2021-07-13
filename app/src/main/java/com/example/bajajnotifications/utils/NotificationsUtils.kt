@@ -8,6 +8,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import androidx.core.net.toUri
 import com.example.bajajnotifications.MainActivity
 import com.example.bajajnotifications.R
 import com.example.bajajnotifications.TTS
@@ -20,7 +21,10 @@ import java.util.*
 
 private const val TAG = "NotificationsUtils"
 
-fun NotificationManager.sendNotification(notificationData: ReceivedNotification, applicationContext: Context) {
+fun NotificationManager.sendNotification(
+    notificationData: ReceivedNotification,
+    applicationContext: Context
+) {
 
     val notificationId = (Date().time / 1000L % Int.MAX_VALUE).toInt()
 
@@ -43,7 +47,7 @@ fun NotificationManager.sendNotification(notificationData: ReceivedNotification,
         PendingIntent.FLAG_UPDATE_CURRENT
     )
 
-    val notificationImage = returnImage(notificationData.imageUrl.toString(), applicationContext)
+    val notificationImage = returnImage(notificationData.imageUrl, applicationContext)
 
     val bigPicStyle = NotificationCompat.BigPictureStyle()
         .bigPicture(notificationImage)
@@ -60,7 +64,7 @@ fun NotificationManager.sendNotification(notificationData: ReceivedNotification,
         .setContentText(notificationData.body)
         .setAutoCancel(true)
         .setPriority(NotificationCompat.PRIORITY_HIGH)
-        .setSound(null)
+        .setSilent(true)
         .setContentIntent(contentPendingIntent)
         .setStyle(bigPicStyle)
         .setLargeIcon(notificationImage)
@@ -75,7 +79,7 @@ fun NotificationManager.sendNotification(notificationData: ReceivedNotification,
 
 }
 
-fun returnImage(imageUrl: String, applicationContext: Context) : Bitmap {
+fun returnImage(imageUrl: String, applicationContext: Context): Bitmap {
     return try {
         val url = URL(imageUrl)
         val connection: HttpURLConnection = url.openConnection() as HttpURLConnection
