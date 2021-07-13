@@ -10,6 +10,7 @@ import android.speech.tts.UtteranceProgressListener
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import com.example.bajajnotifications.dataModels.ReceivedNotification
 import com.example.bajajnotifications.receiver.ReadNotificationReceiver
 import com.example.bajajnotifications.utils.sendNotification
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -27,9 +28,13 @@ class MyFirebaseMessagingService: FirebaseMessagingService(), TextToSpeech.OnIni
 
         remoteMessage.data.let {
             Log.d(TAG, "onMessageReceived Payload: $it")
+            text = it["body"] ?: ""
             tts = TextToSpeech(applicationContext, this)
-            text = it["body"] ?: "Empty Message body"
-            sendNotification(text)
+            val notificationData = ReceivedNotification()
+            notificationData.title = it["title"] ?: ""
+            notificationData.body = it["body"] ?: ""
+            notificationData.imageUrl = it["imageUrl"] ?: ""
+            sendNotification(notificationData)
         }
 
         remoteMessage.notification.let {
@@ -51,9 +56,9 @@ class MyFirebaseMessagingService: FirebaseMessagingService(), TextToSpeech.OnIni
 
     }
 
-    private fun sendNotification(messageBody: String) {
+    private fun sendNotification(notificationData: ReceivedNotification) {
         val notificationManager = ContextCompat.getSystemService(applicationContext, NotificationManager::class.java)
-        notificationManager?.sendNotification(messageBody, applicationContext)
+        notificationManager?.sendNotification(notificationData, applicationContext)
     }
 
     override fun onInit(status: Int) {
@@ -65,6 +70,9 @@ class MyFirebaseMessagingService: FirebaseMessagingService(), TextToSpeech.OnIni
                     addAudioAttributes()
                     speak()
             }
+        }
+        else {
+            Log.d(TAG, "TTS initilization failed XXXX ")
         }
     }
 

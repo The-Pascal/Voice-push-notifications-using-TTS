@@ -42,6 +42,9 @@ class TTS : Service(), OnInitListener {
                 isInit = true
             }
         }
+        else {
+            Log.d(TAG, "onInit: TTS initialization failed")
+        }
     }
 
     private fun speak() {
