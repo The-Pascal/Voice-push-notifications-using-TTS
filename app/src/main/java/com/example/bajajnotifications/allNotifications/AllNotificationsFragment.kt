@@ -50,6 +50,7 @@ class AllNotificationsFragment : Fragment() {
             notificationChannel.enableLights(true)
             notificationChannel.lightColor = Color.RED
             notificationChannel.enableVibration(true)
+            notificationChannel.setSound(null, null)
             notificationChannel.description = getString(R.string.push_notification_channel_description)
 
             val notificationManager = requireActivity().getSystemService(
