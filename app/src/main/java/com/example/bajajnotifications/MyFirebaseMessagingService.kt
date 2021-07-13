@@ -19,7 +19,7 @@ import java.util.*
 
 class MyFirebaseMessagingService : FirebaseMessagingService(), TextToSpeech.OnInitListener {
 
-    private lateinit var tts: TextToSpeech
+    private var tts: TextToSpeech?= null
     private lateinit var text: String
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
@@ -65,7 +65,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService(), TextToSpeech.OnIn
     override fun onInit(status: Int) {
         Log.d(TAG, "onInit: started")
         if (status == TextToSpeech.SUCCESS) {
-            val result = tts.setLanguage(Locale("hi", "IN"))
+            val result = tts?.setLanguage(Locale("hi", "IN"))
             if (result != TextToSpeech.LANG_MISSING_DATA
                 && result != TextToSpeech.LANG_NOT_SUPPORTED
             ) {
@@ -88,7 +88,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService(), TextToSpeech.OnIn
                 .setUsage(AudioAttributes.USAGE_NOTIFICATION)
                 .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
                 .build()
-            tts.setAudioAttributes(audioAttributes)
+            tts?.setAudioAttributes(audioAttributes)
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -134,7 +134,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService(), TextToSpeech.OnIn
     }
 
     private fun speak(audioManager: AudioManager, focusRequest: AudioFocusRequest?) {
-        if (tts != null && text != null) {
+        if (tts != null) {
             Log.d(TAG, "speak: Speaking start.....")
             val speechListener = object : UtteranceProgressListener() {
                 override fun onStart(utteranceId: String?) {
@@ -157,16 +157,16 @@ class MyFirebaseMessagingService : FirebaseMessagingService(), TextToSpeech.OnIn
             val paramsMap: HashMap<String, String> = HashMap()
             paramsMap[TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID] = "tts_firebase_service"
 
-            tts.speak(text, TextToSpeech.QUEUE_FLUSH, paramsMap)
-            tts.setOnUtteranceProgressListener(speechListener)
+            tts?.speak(text, TextToSpeech.QUEUE_FLUSH, paramsMap)
+            tts?.setOnUtteranceProgressListener(speechListener)
         }
     }
 
     override fun onDestroy() {
         Log.d(TAG, "onDestroy: Service is destroyed successfully")
         if (tts != null) {
-            tts.stop()
-            tts.shutdown()
+            tts?.stop()
+            tts?.shutdown()
         }
         super.onDestroy()
     }
