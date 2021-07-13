@@ -151,6 +151,9 @@ class MyFirebaseMessagingService : FirebaseMessagingService(), TextToSpeech.OnIn
 
                 override fun onError(utteranceId: String?) {
                     Log.d(TAG, "onError: Error synthesis")
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && focusRequest != null) {
+                        audioManager.abandonAudioFocusRequest(focusRequest)
+                    }
                     stopSelf()
                 }
             }
