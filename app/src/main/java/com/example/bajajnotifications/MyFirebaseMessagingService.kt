@@ -16,11 +16,22 @@ import com.example.bajajnotifications.utils.sendNotification
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import java.util.*
+import com.example.bajajnotifications.db.AppDatabase;
+import com.example.bajajnotifications.db.Notifications
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
 
 class MyFirebaseMessagingService : FirebaseMessagingService(), TextToSpeech.OnInitListener {
 
     private var tts: TextToSpeech?= null
     private lateinit var text: String
+
+    private val db by lazy{
+        AppDatabase.getDatabase(this)
+    }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
 
@@ -30,15 +41,37 @@ class MyFirebaseMessagingService : FirebaseMessagingService(), TextToSpeech.OnIn
             Log.d(TAG, "onMessageReceived Payload: $it")
             text = it["body"] ?: ""
             tts = TextToSpeech(applicationContext, this)
+
             val notificationData = ReceivedNotification()
             notificationData.title = it["title"] ?: ""
             notificationData.body = it["body"] ?: ""
             notificationData.imageUrl = it["imageUrl"] ?: ""
             sendNotification(notificationData)
+            saveNotification(it)
+
         }
 
         remoteMessage.notification.let {
             Log.d(TAG, "onMessageReceived Notification: ${it?.body}")
+        }
+
+    }
+
+    private fun saveNotification(it: Map<String, String>) {
+        val title : String = it["title"] ?: "Empty Title"
+        val description : String = it["body"] ?: "Empty description"
+        val imageUri : String = it["imageUrl"] ?: "Empty Uri"
+
+        GlobalScope.launch(Dispatchers.Main){
+            val id = withContext(Dispatchers.IO){
+                return@withContext db.notificationDao().insertNotification(
+                    Notifications(
+                        title,
+                        description,
+                        imageUri
+                    )
+                )
+            }
         }
     }
 

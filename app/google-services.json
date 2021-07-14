@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "64737672471",
+    "project_id": "bajaj-notifications",
+    "storage_bucket": "bajaj-notifications.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:64737672471:android:ae06f896f2cb12e5fc8b52",
+        "android_client_info": {
+          "package_name": "com.example.bajajnotifications"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "64737672471-5i6roicemuapsi1gqt15ep55tgpr0gkb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiegTUyglMuvgS91ZDcXoxJoSGloz6InA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "64737672471-5i6roicemuapsi1gqt15ep55tgpr0gkb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

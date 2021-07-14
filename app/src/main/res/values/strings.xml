@@ -4,7 +4,13 @@
     <string name="push_notification_channel_name" translatable="false">Push Notifications</string>
     <string name="notification_title">Bajaj Finserv</string>
     <string name="push_notification_channel_description">Test Channel for Push notifications</string>
+
+   
+    <string name="toolbar_title">Bajaj Notifications</string>
+    <string name="action_menu_title">History</string>
+
     <string name="play_sound">Play Sound</string>
+
 
     <!--  topics name strings  -->
     <string name="test">test</string>
