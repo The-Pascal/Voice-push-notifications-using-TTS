@@ -15,11 +15,22 @@ import com.example.bajajnotifications.utils.sendNotification
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import java.util.*
+import com.example.bajajnotifications.db.AppDatabase;
+import com.example.bajajnotifications.db.Notifications
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
 
 class MyFirebaseMessagingService: FirebaseMessagingService(), TextToSpeech.OnInitListener {
 
     private lateinit var tts: TextToSpeech
     private lateinit var text: String
+
+    private val db by lazy{
+        AppDatabase.getDatabase(this)
+    }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
 
@@ -30,10 +41,30 @@ class MyFirebaseMessagingService: FirebaseMessagingService(), TextToSpeech.OnIni
             tts = TextToSpeech(applicationContext, this)
             text = it["body"] ?: "Empty Message body"
             sendNotification(text)
+            saveNotification(it)
         }
 
         remoteMessage.notification.let {
             Log.d(TAG, "onMessageReceived Notification: ${it?.body}")
+        }
+
+    }
+
+    private fun saveNotification(it: Map<String, String>) {
+        val title : String = it["title"] ?: "Empty Title"
+        val description : String = it["body"] ?: "Empty description"
+        val imageUri : String = it["imageUrl"] ?: "Empty Uri"
+
+        GlobalScope.launch(Dispatchers.Main){
+            val id = withContext(Dispatchers.IO){
+                return@withContext db.notificationDao().insertNotification(
+                    Notifications(
+                        title,
+                        description,
+                        imageUri
+                    )
+                )
+            }
         }
     }
 

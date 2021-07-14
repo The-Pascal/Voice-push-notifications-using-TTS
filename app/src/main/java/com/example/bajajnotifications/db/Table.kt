@@ -8,8 +8,8 @@ import androidx.room.PrimaryKey
 data class Notifications(
     var title : String,
     var description : String,
-    var timestamp : Long = System.currentTimeMillis(),
     var imageUri : String,
+    var timestamp : Long = System.currentTimeMillis(),
     @PrimaryKey(autoGenerate = true)
     var id : Long = 0
 )

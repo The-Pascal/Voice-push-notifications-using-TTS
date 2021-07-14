@@ -3,15 +3,21 @@ package com.example.bajajnotifications.History
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.LinearLayout
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bajajnotifications.databinding.ActivityHistoryBinding
+import com.example.bajajnotifications.db.AppDatabase
 import com.example.bajajnotifications.db.Notifications
 
 
 class History : AppCompatActivity() {
 
-    val list = arrayListOf<Notifications>()
-    var adapter = HistoryAdapter(list)
+    private val db by lazy{
+        AppDatabase.getDatabase(this)
+    }
+
+    private val list = arrayListOf<Notifications>()
+    private var adapter = HistoryAdapter(list)
 
     private lateinit var binding: ActivityHistoryBinding
 
@@ -26,14 +32,20 @@ class History : AppCompatActivity() {
             adapter = this@History.adapter
         }
 
-//        list.add(Notifications("First Notification", "Sample Description", "xyz", "xyz"))
-//        list.add(Notifications("Second Notification", "Sample Description", "xyz", "xyz"))
-//        list.add(Notifications("Third Notification", "Sample Description", "xyz", "xyz"))
-//        list.add(Notifications("Fourth Notification", "Sample Description", "xyz", "xyz"))
-//        list.add(Notifications("Fifth Notification", "Sample Description", "xyz", "xyz"))
-//        list.add(Notifications("Sixth Notification", "Sample Description", "xyz", "xyz"))
-//        list.add(Notifications("Seventh Notification", "Sample Description", "xyz", "xyz"))
-//        list.add(Notifications("Eighth Notification", "Sample Description", "xyz", "xyz"))
+        displayNotifications()
+    }
 
+    private fun displayNotifications() {
+        db.notificationDao().getNotifications().observe(this, Observer {
+            if(!it.isNullOrEmpty()){
+                list.clear()
+                list.addAll(it)
+                adapter.notifyDataSetChanged()
+            }
+            else{
+                list.clear()
+                adapter.notifyDataSetChanged()
+            }
+        })
     }
 }
