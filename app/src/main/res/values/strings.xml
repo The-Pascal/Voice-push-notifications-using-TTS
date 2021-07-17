@@ -5,7 +5,7 @@
     <string name="notification_title">Bajaj Finserv</string>
     <string name="push_notification_channel_description">Test Channel for Push notifications</string>
 
-   
+
     <string name="toolbar_title">Bajaj Notifications</string>
     <string name="action_menu_title">History</string>
 
@@ -14,6 +14,13 @@
 
     <!--  topics name strings  -->
     <string name="test">test</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--    bottom navigation strings-->
+    <string name = "home">Home</string>
+    <string name = "history">History</string>
+    <string name = "settings">Settings</string>
 
 
 </resources>
