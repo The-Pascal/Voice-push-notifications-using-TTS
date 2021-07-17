@@ -1,6 +1,7 @@
-package com.example.bajajnotifications.History
+package com.example.bajajnotifications.history
 
-import android.app.Notification
+import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.bajajnotifications.R
 import com.example.bajajnotifications.databinding.NotificationBinding
 import com.example.bajajnotifications.db.Notifications
+import com.squareup.picasso.Picasso
+
 
 class HistoryAdapter(val list : List<Notifications>) : RecyclerView.Adapter<HistoryAdapter.historyViewHolder>() {
 
@@ -33,9 +36,16 @@ class HistoryAdapter(val list : List<Notifications>) : RecyclerView.Adapter<Hist
                 with( binding ){
                     notificationTitle.text = notification.title
                     notificationDescription.text = notification.description
+                    //Log.d(TAG, "ImageUri: ${notification.imageUri} ")
+                    Picasso
+                        .get()
+                        .load(notification.imageUri)
+                        .into(notificationImage);
                 }
             }
     }
 
-
+    companion object{
+        private const val TAG = "image"
+    }
 }

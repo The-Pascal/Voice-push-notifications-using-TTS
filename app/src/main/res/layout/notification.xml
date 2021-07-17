@@ -18,6 +18,7 @@
         android:layout_marginStart="5dp">
 
         <RelativeLayout
+            android:id="@+id/text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
@@ -54,8 +55,75 @@
             android:textSize="16sp"
             android:layout_alignParentStart="true" />
 
+        <ImageView
+            android:id="@+id/notificationImage"
+            android:layout_below="@id/notificationDescription"
+            android:layout_marginTop="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
         </RelativeLayout>
 
     </RelativeLayout>
+
+    <!--    <RelativeLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginBottom="5dp"-->
+<!--        android:layout_marginLeft="5dp"-->
+<!--        android:background="@android:color/white"-->
+<!--        android:paddingBottom="5dp"-->
+<!--        android:layout_marginStart="5dp">-->
+
+<!--        <RelativeLayout-->
+<!--            android:id="@+id/text"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginEnd="5dp"-->
+<!--            android:background="?android:attr/selectableItemBackground"-->
+<!--            android:padding="10dp"-->
+<!--            android:layout_marginRight="10dp"-->
+<!--            android:focusable="true">-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/notificationTitle"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_alignParentLeft="true"-->
+<!--            android:layout_marginRight="5dp"-->
+<!--            android:ellipsize="end"-->
+<!--            android:maxLines="1"-->
+<!--            android:text="Notification Title"-->
+<!--            android:textColor="#303030"-->
+<!--            android:textSize="20sp"-->
+<!--            android:textStyle="bold"-->
+<!--            />-->
+
+
+<!--        <TextView-->
+<!--            android:id="@+id/notificationDescription"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_alignParentLeft="true"-->
+<!--            android:layout_below="@+id/notificationTitle"-->
+<!--            android:layout_marginTop="4dp"-->
+<!--            android:ellipsize="end"-->
+<!--            android:text="This is the description of Notification"-->
+<!--            android:textColor="@android:color/black"-->
+<!--            android:textSize="16sp"-->
+<!--            android:layout_alignParentStart="true" />-->
+
+<!--        </RelativeLayout>-->
+
+<!--        <ImageView-->
+<!--            android:layout_below="@id/text"-->
+<!--            android:id="@+id/notificationImage"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:contentDescription="TODO" />-->
+
+<!--    </RelativeLayout>-->
+
+
 
 </com.google.android.material.card.MaterialCardView>

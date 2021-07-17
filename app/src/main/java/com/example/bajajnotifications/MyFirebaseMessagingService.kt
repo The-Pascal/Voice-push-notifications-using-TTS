@@ -42,12 +42,16 @@ class MyFirebaseMessagingService : FirebaseMessagingService(), TextToSpeech.OnIn
             text = it["body"] ?: ""
             tts = TextToSpeech(applicationContext, this)
 
+            val title : String = it["title"] ?: "Empty Title"
+            val description : String = it["body"] ?: "Empty description"
+            val imageUri : String = it["image"] ?: "Empty Uri"
+
             val notificationData = ReceivedNotification()
-            notificationData.title = it["title"] ?: ""
-            notificationData.body = it["body"] ?: ""
-            notificationData.imageUrl = it["imageUrl"] ?: ""
+            notificationData.title = title
+            notificationData.body = description
+            notificationData.imageUrl = imageUri
             sendNotification(notificationData)
-            saveNotification(it)
+            saveNotification(title,description,imageUri)
 
         }
 
@@ -57,10 +61,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService(), TextToSpeech.OnIn
 
     }
 
-    private fun saveNotification(it: Map<String, String>) {
-        val title : String = it["title"] ?: "Empty Title"
-        val description : String = it["body"] ?: "Empty description"
-        val imageUri : String = it["imageUrl"] ?: "Empty Uri"
+    private fun saveNotification(title : String, description : String, imageUri : String) {
 
         GlobalScope.launch(Dispatchers.Main){
             val id = withContext(Dispatchers.IO){
